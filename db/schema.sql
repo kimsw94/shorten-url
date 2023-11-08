@@ -30,8 +30,10 @@ CREATE TABLE `schema_migrations` (
 CREATE TABLE `URLS` (
   `id` int NOT NULL AUTO_INCREMENT,
   `url` varchar(1000) NOT NULL,
-  `shortUrl` varchar(1000) NOT NULL,
-  `ip` varchar(1000) DEFAULT NULL,
+  `newUrl` varchar(1000) NOT NULL,
+  `host` varchar(1000) NOT NULL,
+  `path` varchar(1000) NOT NULL,
+  `ip` varchar(1000) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
