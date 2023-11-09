@@ -1,20 +1,12 @@
 import { EntityManager } from 'typeorm'
 import { UrlEntity } from "../entities/url.entity"
-import { UrlDTO } from '../api/url/dtos/url.dto'
 import { Injectable } from '@nestjs/common'
 
 type UrlDataType = {
     url: string,
-    host: string,
-    path: string,
     newUrl: string,
     ip: string;
 }
-
-type IpObjectType = {
-    ip: string
-}
-
 
 @Injectable()
 export class UrlRepository {
@@ -34,7 +26,6 @@ export class UrlRepository {
         }
 
         const result = await repo
-            .createQueryBuilder('URLS', 'u')
             .select(['u.url'])
             .where('u.newUrl = :newUrl', { newUrl })
             .getOne()
@@ -42,7 +33,7 @@ export class UrlRepository {
         return result
     }
 
-    async countIp(ip: String, manager?: EntityManager) {
+    async countIp(ip: String, date: Date, manager?: EntityManager) {
         let repo = null;
 
         if(manager) {
@@ -55,12 +46,13 @@ export class UrlRepository {
     
         const count = await repo
             .where('u.ip = :ip', { ip })
+            .andWhere('u.created_at = :date', { date })
             .getCount();
   
         return count
     }
 
-    async getUrlInfo(data: UrlDataType, manager?: EntityManager) {
+    async getUrlInfo(dto: UrlDataType, manager?: EntityManager) {
         let repo = null;
 
         if(manager) {
@@ -71,7 +63,7 @@ export class UrlRepository {
             repo = repo.createQueryBuilder('URLS', 'u')
         }
 
-        const url = data.url
+        const url = dto.url
         const result = await repo
             .where('u.url = :url', { url })
             .getOne()
@@ -79,7 +71,7 @@ export class UrlRepository {
         return result
     }
 
-    async saveInfo(data: UrlDataType, ip: string, manager?: EntityManager) {
+    async saveInfo(dto: UrlDataType, ip: string, manager?: EntityManager) {
         let repo = null;
         if(manager) {
             repo = manager.getRepository(UrlEntity)
@@ -94,13 +86,37 @@ export class UrlRepository {
             .into('URLS')
             .values(
                 {
-                url: data.url,
-                newUrl: data.newUrl,
-                path: data.path,
-                host: data.host,
-                ip: data.ip,
+                url: dto.url,
+                newUrl: "0",
+                ip: ip,
                 },
             )
+            .execute()
+ 
+        return { result }
+    }
+
+    async saveNewUrl(dto: UrlDataType, getNewUrl: string, manager?: EntityManager) {
+        let repo = null;
+        if(manager) {
+            repo = manager.getRepository(UrlEntity)
+        } else {
+            repo = this.entityManager
+        }
+
+        const url = dto.url
+        console.log(url)
+        console.log(dto)
+        console.log(getNewUrl)
+        const result = await repo
+            .createQueryBuilder()
+            .update('URLS')
+            .set(
+                {
+                newUrl: getNewUrl,
+                },
+            )
+            .where({ url })
             .execute()
  
         return { result }

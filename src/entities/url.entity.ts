@@ -15,12 +15,6 @@ export class UrlEntity {
   newUrl: string
 
   @Column({ type: 'varchar' })
-  path: string
-
-  @Column({ type: 'varchar' })
-  host: string
-
-  @Column({ type: 'varchar' })
   ip: string
 
   @CreateDateColumn() // 이 데코레이터를 사용하여 created_at 필드를 설정
