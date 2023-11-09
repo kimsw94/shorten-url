@@ -24,7 +24,7 @@ export class UrlRepository {
 
     async redirectInfo(newUrl: String, manager?: EntityManager) {
         let repo = null;
-        console.log(newUrl)
+        
         if(manager) {
             repo = manager.getRepository(UrlEntity)
             repo = repo.createQueryBuilder('u')
@@ -34,6 +34,7 @@ export class UrlRepository {
         }
 
         const result = await repo
+            .createQueryBuilder('URLS', 'u')
             .select(['u.url'])
             .where('u.newUrl = :newUrl', { newUrl })
             .getOne()
