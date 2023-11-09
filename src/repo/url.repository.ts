@@ -1,6 +1,7 @@
 import { EntityManager } from 'typeorm'
 import { UrlEntity } from "../entities/url.entity"
 import { Injectable } from '@nestjs/common'
+import { UrlUtil } from '../api/url/utils/url-save.util'
 
 type UrlDataType = {
     url: string,
@@ -11,7 +12,8 @@ type UrlDataType = {
 @Injectable()
 export class UrlRepository {
     constructor(
-        private readonly entityManager: EntityManager
+        private readonly entityManager: EntityManager,
+        private readonly urlUtil: UrlUtil
     ) { }
 
     async redirectInfo(newUrl: String, manager?: EntityManager) {
@@ -45,17 +47,17 @@ export class UrlRepository {
         }
       
         const today = new Date();
-        today.setHours(0, 0, 0, 0); 
+            today.setHours(0, 0, 0, 0); 
         const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1); 
-        
+            tomorrow.setDate(tomorrow.getDate() + 1); 
+
         const count = await repo
             .select('u.ip')
             .where('u.ip = :ip', { ip })
             .andWhere('u.created_at >= :startOfDay', { startOfDay: today })
             .andWhere('u.created_at < :endOfDay', { endOfDay: tomorrow })
             .getCount();
-        console.log(count)
+       
         return count
     }
 
