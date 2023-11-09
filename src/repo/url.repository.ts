@@ -33,7 +33,7 @@ export class UrlRepository {
         return result
     }
 
-    async countIp(ip: String, date: Date, manager?: EntityManager) {
+    async countIp(ip: String, manager?: EntityManager) {
         let repo = null;
 
         if(manager) {
@@ -43,12 +43,19 @@ export class UrlRepository {
             repo = this.entityManager
             repo = repo.createQueryBuilder('URLS', 'u')
         }
-    
+      
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1); 
+        
         const count = await repo
+            .select('u.ip')
             .where('u.ip = :ip', { ip })
-            .andWhere('u.created_at = :date', { date })
+            .andWhere('u.created_at >= :startOfDay', { startOfDay: today })
+            .andWhere('u.created_at < :endOfDay', { endOfDay: tomorrow })
             .getCount();
-  
+        console.log(count)
         return count
     }
 
@@ -105,9 +112,6 @@ export class UrlRepository {
         }
 
         const url = dto.url
-        console.log(url)
-        console.log(dto)
-        console.log(getNewUrl)
         const result = await repo
             .createQueryBuilder()
             .update('URLS')
