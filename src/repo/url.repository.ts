@@ -8,11 +8,11 @@ type UrlDataType = {
     host: string,
     path: string,
     newUrl: string,
-    ip: string
+    ip: string;
 }
 
-type UrlObjectType = {
-    url: string
+type IpObjectType = {
+    ip: string
 }
 
 
@@ -24,7 +24,7 @@ export class UrlRepository {
 
     async redirectInfo(newUrl: String, manager?: EntityManager) {
         let repo = null;
-        
+
         if(manager) {
             repo = manager.getRepository(UrlEntity)
             repo = repo.createQueryBuilder('u')
@@ -41,6 +41,25 @@ export class UrlRepository {
   
         return result
     }
+
+    async countIp(ip: String, manager?: EntityManager) {
+        let repo = null;
+
+        if(manager) {
+            repo = manager.getRepository(UrlEntity)
+            repo = repo.createQueryBuilder('u')
+        } else {
+            repo = this.entityManager
+            repo = repo.createQueryBuilder('URLS', 'u')
+        }
+    
+        const count = await repo
+            .where('u.ip = :ip', { ip })
+            .getCount();
+  
+        return count
+    }
+
     async getUrlInfo(data: UrlDataType, manager?: EntityManager) {
         let repo = null;
 
@@ -60,7 +79,7 @@ export class UrlRepository {
         return result
     }
 
-    async saveInfo(data: UrlDataType, manager?: EntityManager) {
+    async saveInfo(data: UrlDataType, ip: string, manager?: EntityManager) {
         let repo = null;
         if(manager) {
             repo = manager.getRepository(UrlEntity)

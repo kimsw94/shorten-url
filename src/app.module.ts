@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { UrlModule } from './api/url/url.module';
+import { IpLogMiddleware } from 'middleware/ip-log.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlController } from './api/url/url.controller';
 import { UrlService } from './api/url/url.service';
@@ -21,12 +22,19 @@ import { UrlEntity } from './entities/url.entity';
       ],
       synchronize: true,
     }),
-    UrlModule
+    UrlModule,
   ],
   controllers: [AppController],
   providers: [],
 })
+
 export class AppModule { }
+
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(IpLogMiddleware).forRoutes('*');
+//   }
+// }
 
 // Module위로 가야함
 // let envPath: string;
