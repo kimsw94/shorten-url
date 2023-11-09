@@ -16,7 +16,7 @@ import { UrlEntity } from './entities/url.entity';
       entities: [
           UrlEntity,
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     UrlModule,
   ],
