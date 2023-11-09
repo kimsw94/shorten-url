@@ -12,8 +12,7 @@ type UrlDataType = {
 @Injectable()
 export class UrlRepository {
     constructor(
-        private readonly entityManager: EntityManager,
-        private readonly urlUtil: UrlUtil
+        private readonly entityManager: EntityManager
     ) { }
 
     async redirectInfo(newUrl: String, manager?: EntityManager) {
