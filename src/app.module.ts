@@ -26,11 +26,6 @@ import { UrlEntity } from './entities/url.entity';
 
 export class AppModule { }
 
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer.apply(IpLogMiddleware).forRoutes('*');
-//   }
-// }
 
 // Module위로 가야함
 // let envPath: string;
