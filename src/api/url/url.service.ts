@@ -25,15 +25,13 @@ export class UrlService {
         if (count > 30 ) return { "message ": "입력 값이 30회를 초과하였습니다." }
         
         const check = await this.urlRepository.getUrlInfo(dto)
-        if (check) {
-            return { message: "단축된 URL이 존재합니다." } 
-        }
+        if (check) return { message: "단축된 URL이 존재합니다." } 
+        
         if (!check) {
+            //원본 URL을 저장합니다.
             await this.urlRepository.saveInfo(dto, ip)
-            
             const getNewUrl = await this.urlUtil.newUrl(dto, ip);
             await this.urlRepository.saveNewUrl(dto, getNewUrl)
-            
             return { "message": "Success" };
         }
     }
