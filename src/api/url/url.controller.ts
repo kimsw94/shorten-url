@@ -32,6 +32,7 @@ export class UrlController {
         //URL인 경우, URL을 단축합니다.
         const ip = req.ip
         const shortenUrl = await this.urlService.shortenUrl(dto, ip);
+        
         return { shortenUrl }
 
     }
