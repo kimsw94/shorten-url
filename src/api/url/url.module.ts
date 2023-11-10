@@ -19,6 +19,6 @@ export class UrlModule {
     configure(consumer: MiddlewareConsumer) {
       consumer
         .apply(IpLogMiddleware)
-        .forRoutes({ path: '*', method: RequestMethod.ALL }); // 모든 경로 및 메서드에 미들웨어 적용
+        .forRoutes({ path: '*', method: RequestMethod.ALL });
     }
 }

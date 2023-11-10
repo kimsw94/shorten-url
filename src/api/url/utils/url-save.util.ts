@@ -8,14 +8,15 @@ export class UrlUtil {
     constructor(
         private readonly urlRepository: UrlRepository,
       ) { }
-      
+
     async newUrl(dto: UrlDTO, ip: string) {
-        // 변환할 고유한 Url의 id값을 데이터베이스에서 불러옵니다.
+        
+        // URL의 id값을 불러옵니다.
         const data = await this.urlRepository.getUrlInfo(dto)
         const id = data.id
         if(!id) await this.urlRepository.saveInfo(dto, ip)
 
-        //알고리즘을 이용하여 새로운 URL을 생성합니다. 함수에 사용된 알고리즘은 ID값을 62진수로 변환합니다. 
+        //ID값을 62진수로 변환합니다. 
         function decimalTo62(id: number): string {
             const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const base = characters.length;
@@ -30,6 +31,7 @@ export class UrlUtil {
             return result;
         }
         const encodedId = decimalTo62(id);
+        
         return encodedId
     }
 
