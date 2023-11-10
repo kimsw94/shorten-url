@@ -4,6 +4,19 @@ import { UrlModule } from './api/url/url.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './entities/url.entity';
 import { AsyncWrapMiddleware } from 'middleware/aync-wrap.middleware';
+import * as dotenv from 'dotenv'
+import * as path from 'path'
+
+
+let envPath: string;
+switch (process.env.APP_ENV) {
+  case 'dev': envPath = 'envs/.local.env'; break;
+  case 'staging': envPath = 'envs/.staging.env'; break;
+  case 'prod': envPath = 'envs/.prod.env'; break;
+  default: envPath = 'envs/.local.env'
+}
+
+dotenv.config({ path: path.resolve(envPath) });
 
 @Module({
   imports: [
@@ -33,12 +46,3 @@ export class AppModule {
   }
 }
 
-// Module위로 가야함
-// let envPath: string;
-// switch (process.env.APP_ENV) {
-//   case 'dev': envPath = 'envs/.local.env'; break;
-//   case 'staging': envPath = 'envs/.staging.env'; break;
-//   case 'prod': envPath = 'envs/.prod.env'; break;
-//   default: envPath = 'envs/.local.env'
-// }
-// dotenv.config({ path: path.resolve(envPath) })
