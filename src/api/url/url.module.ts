@@ -3,16 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UrlController } from './url.controller'
 import { UrlService } from './url.service'
 import { UrlRepository } from '../../repo/url.repository'
-import { UrlUtil } from './utils/url-save.util'
+import { UrlSaveUtil } from './utils/url-save.util'
 import { UrlEntity } from '../../entities/url.entity'
 import { IpLogMiddleware } from 'middleware/ip-log.middleware'
+import { UrlValidateUtil } from './utils/url-validate.util'
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([UrlEntity]),
     ],
     controllers: [UrlController],
-    providers: [UrlService, UrlRepository, UrlUtil]
+    providers: [UrlService, UrlRepository, UrlSaveUtil, UrlValidateUtil]
 })
 
 export class UrlModule {

@@ -1,7 +1,6 @@
 import { EntityManager } from 'typeorm'
 import { UrlEntity } from "../entities/url.entity"
 import { Injectable } from '@nestjs/common'
-import { UrlUtil } from '../api/url/utils/url-save.util'
 
 type UrlDataType = {
     url: string,

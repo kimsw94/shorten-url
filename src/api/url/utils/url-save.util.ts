@@ -3,7 +3,7 @@ import { UrlRepository } from '../../../repo/url.repository'
 import { UrlDTO } from '../dtos/url.dto'
 
 @Injectable()
-export class UrlUtil {
+export class UrlSaveUtil {
     
     constructor(
         private readonly urlRepository: UrlRepository,

@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common'
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { json, urlencoded } from 'body-parser'
 
 class Application {
@@ -15,9 +16,13 @@ class Application {
     this.PORT = process.env.PORT || '3100'
   }
 
+  private async setUpGlobalMiddleware() {
+    this.server.useGlobalFilters(new HttpApiExceptionFilter())
+  }
+
   async bootstrap() {
+    await this.setUpGlobalMiddleware()
     await this.server.listen(this.PORT)
-    console.log("server on")
   }
 
   startLog() {

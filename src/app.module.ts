@@ -1,9 +1,10 @@
 import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core'
+import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { AppController } from './app.controller';
 import { UrlModule } from './api/url/url.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './entities/url.entity';
-import { AsyncWrapMiddleware } from 'middleware/aync-wrap.middleware';
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 
@@ -34,14 +35,19 @@ dotenv.config({ path: path.resolve(envPath) });
     UrlModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+    provide: APP_FILTER,
+    useClass: HttpApiExceptionFilter,
+  }
+  ],
 })
 
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AsyncWrapMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL }); 
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(HttpApiExceptionFilter)
+  //     .forRoutes({ path: '*', method: RequestMethod.ALL }); 
+  // }
 }
 

@@ -1,14 +1,16 @@
 import { Body, Param, Controller, Get, Logger, Post, Query, Req, Res, Redirect, UseGuards } from '@nestjs/common';
 import { UrlDTO } from "./dtos/url.dto";
 import { UrlService } from './url.service';
-import { IpLogMiddleware } from 'middleware/ip-log.middleware';
-import { Request } from 'express'
+import { IpLog } from '../../common/utils/ip-log';
+import { NextFunction, Request } from 'express'
+import { UrlValidateUtil } from './utils/url-validate.util';
 
 @Controller()
 export class UrlController {
 
     constructor(
         private readonly urlService: UrlService,
+        private readonly urlValidate: UrlValidateUtil
     ) { }
 
     @Get('/:newUrl')
@@ -22,17 +24,18 @@ export class UrlController {
     }
 
     @Post('shorten')
-    @UseGuards(IpLogMiddleware)
-    async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request){
+    @UseGuards(IpLog)
+    async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request, next: NextFunction){
+        let ip = req.ip;
 
         //URL이 아닌 경우, 리턴합니다.
-        const urlCheck = new URL(dto.url)
-        if (!urlCheck) return { "message" : "URL형태로 값을 입력해주세요"}
+        if (dto.url) {
+        const validate = await this.urlValidate.validate(dto, next)
+        return validate
+        }
 
         //URL인 경우, URL을 단축합니다.
-        const ip = req.ip
         const shortenUrl = await this.urlService.shortenUrl(dto, ip);
-        
         return { shortenUrl }
 
     }
