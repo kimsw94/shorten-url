@@ -27,11 +27,15 @@ export class UrlService {
         if (check) return { message: "단축된 URL이 존재합니다." } 
         
         if (!check) {
+            
             //원본 URL을 저장합니다.
             await this.urlRepository.saveInfo(dto, ip)
             const getNewUrl = await this.urlUtil.newUrl(dto, ip);
+
+            //단축 URL을 저장합니다.
             await this.urlRepository.saveNewUrl(dto, getNewUrl)
             return { "message": "Success" };
+    
         }
     }
 }
