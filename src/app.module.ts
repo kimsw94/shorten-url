@@ -7,7 +7,6 @@ import { AsyncWrapMiddleware } from 'middleware/aync-wrap.middleware';
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 
-
 let envPath: string;
 switch (process.env.APP_ENV) {
   case 'dev': envPath = 'envs/.local.env'; break;
