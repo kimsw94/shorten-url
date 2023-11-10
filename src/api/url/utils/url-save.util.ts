@@ -31,12 +31,6 @@ export class UrlUtil {
         return encodedId
     }
 
-    async saveNewUrl(dto: UrlDTO, ip: string){
-        const getNewUrl = await this.newUrl(dto, ip)
-        const setNewUrl = await this.urlRepository.saveNewUrl(dto, getNewUrl)
-        return { setNewUrl }
-    }
-
     async dayCount() {
         const today = new Date();
         today.setHours(0, 0, 0, 0); 
