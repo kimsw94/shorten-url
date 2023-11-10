@@ -6,7 +6,6 @@ import { Request } from 'express'
 
 @Controller()
 export class UrlController {
-    private readonly logger = new Logger(UrlController.name)
 
     constructor(
         private readonly urlService: UrlService,
@@ -26,6 +25,7 @@ export class UrlController {
 
         //URL이 아닌 경우, 서버 리소스를 낭비하지 않도록 컨르롤러에서 분기처리하였습니다.
         const urlCheck = new URL(dto.url)
+        console.log(urlCheck)
         if (!urlCheck) return { "message" : "URL형태로 값을 입력해주세요"}
 
         //URL일 경우, URL을 단축합니다.

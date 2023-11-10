@@ -1,8 +1,9 @@
-import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { UrlModule } from './api/url/url.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './entities/url.entity';
+import { AsyncWrapMiddleware } from 'middleware/aync-wrap.middleware';
 
 @Module({
   imports: [
@@ -24,8 +25,13 @@ import { UrlEntity } from './entities/url.entity';
   providers: [],
 })
 
-export class AppModule { }
-
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AsyncWrapMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL }); 
+  }
+}
 
 // Module위로 가야함
 // let envPath: string;

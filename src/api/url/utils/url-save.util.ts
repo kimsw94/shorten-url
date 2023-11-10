@@ -4,9 +4,11 @@ import { UrlDTO } from '../dtos/url.dto'
 
 @Injectable()
 export class UrlUtil {
+    
     constructor(
         private readonly urlRepository: UrlRepository,
       ) { }
+      
     async newUrl(dto: UrlDTO, ip: string) {
         // 변환할 고유한 Url의 id값을 데이터베이스에서 불러옵니다.
         const data = await this.urlRepository.getUrlInfo(dto)

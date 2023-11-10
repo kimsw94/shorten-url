@@ -5,7 +5,6 @@ import { UrlDTO } from './dtos/url.dto'
 
 @Injectable()
 export class UrlService {
-  private readonly logger = new Logger()
 
   constructor(
     private readonly urlRepository: UrlRepository,
