@@ -27,7 +27,6 @@ export class UrlController {
 
         //URL이 아닌 경우, 리턴합니다.
         const urlCheck = new URL(dto.url)
-        console.log(urlCheck)
         if (!urlCheck) return { "message" : "URL형태로 값을 입력해주세요"}
 
         //URL인 경우, URL을 단축합니다.
