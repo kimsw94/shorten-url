@@ -30,8 +30,9 @@ export class UrlUtil {
         
             return result;
         }
-        const encodedId = decimalTo62(id);
         
+        const encodedId = decimalTo62(id);
+
         return encodedId
     }
 
