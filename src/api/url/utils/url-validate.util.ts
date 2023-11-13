@@ -19,7 +19,7 @@ export class UrlValidateUtil {
             const url = new URL(dto.url);
             next()
         } catch (error) {
-            return { "message" :'유효하지 않은 URL 입니다.'};
+            throw new InternalServerErrorException("유효한 URL 형태가 아닙니다.")
         }
 
     }
