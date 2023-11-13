@@ -7,8 +7,6 @@ export class isToday implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     let today = startOfDay(new Date()).toISOString();
     let tomorrow = endOfDay(new Date()).toISOString();
-    console.log(today)
-    console.log(tomorrow)
     next()
   }
 }
