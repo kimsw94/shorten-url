@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common
 import { UrlSaveUtil } from './utils/url-save.util'
 import { UrlRepository } from '../../repo/url.repository'
 import { UrlDTO } from './dtos/url.dto'
+import { startOfDay, endOfDay } from 'date-fns';
 
 @Injectable()
 export class UrlService {
@@ -17,10 +18,12 @@ export class UrlService {
   }
 
   async shortenUrl(dto: UrlDTO, ip: string) {    
- 
+    let today = startOfDay(new Date()).toISOString();
+    let tomorrow = endOfDay(new Date()).toISOString();
+
     if(!dto.url) throw new InternalServerErrorException("단축할 URL을 입력해주세요.") 
 
-    const count = await this.urlRepository.countIp(ip)
+    const count = await this.urlRepository.countIp(ip, today, tomorrow)
     if (count > 30 ) throw new InternalServerErrorException("요청 횟수가 30회를 초과하였습니다.")
         
     const check = await this.urlRepository.getUrlInfo(dto)
