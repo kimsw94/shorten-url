@@ -6,6 +6,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 @Injectable()
 export class isUrl implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    
     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#]+\.(com|co\.kr|net)(\/[^\s]*)?$/;
 
     if (urlRegex.test(req.body.url)) {

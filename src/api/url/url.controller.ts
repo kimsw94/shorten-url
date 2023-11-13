@@ -3,11 +3,8 @@ import {
   Param,
   Controller,
   Get,
-  Logger,
   Post,
-  Query,
   Req,
-  Res,
   Redirect,
   UseGuards,
 } from '@nestjs/common';
@@ -40,7 +37,6 @@ export class UrlController {
     next: NextFunction,
   ) {
     let ip = req.ip;
-
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
   }
