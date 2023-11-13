@@ -31,10 +31,10 @@ export class UrlService {
       //원본 URL을 저장합니다.
       await this.urlRepository.saveInfo(dto, ip)
       const getNewUrl = await this.urlSaveUtil.newUrl(dto, ip);
-
+      
       //단축 URL을 저장합니다.
       await this.urlRepository.saveNewUrl(dto, getNewUrl)
-      return { message : "URL을 단축하였습니다." }
+      return { message : "URL을 단축하였습니다.", getNewUrl }
     
     }
   }
