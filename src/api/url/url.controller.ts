@@ -45,9 +45,3 @@ export class UrlController {
     return { shortenUrl };
   }
 }
-
-
-// if (dto.url) {
-//     const validate = await this.urlValidate.validate(dto, next);
-//     return validate;
-//   }
