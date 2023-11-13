@@ -15,6 +15,8 @@ import { IpLogger } from '../../common/utils/ip-logger';
 })
 export class UrlModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(IpLogger).forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer
+    .apply(IpLogger)
+    .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
