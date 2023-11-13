@@ -42,14 +42,13 @@ export class UrlController {
   ) {
     let ip = req.ip;
 
-    //URL이 아닌 경우, 리턴합니다.
-    if (dto.url) {
-      const validate = await this.urlValidate.validate(dto, next);
-      return validate;
-    }
-
-    //URL인 경우, URL을 단축합니다.
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
   }
 }
+
+
+// if (dto.url) {
+//     const validate = await this.urlValidate.validate(dto, next);
+//     return validate;
+//   }
