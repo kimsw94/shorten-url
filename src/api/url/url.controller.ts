@@ -7,17 +7,19 @@ import {
   Req,
   Redirect,
   UseGuards,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UrlDTO } from './dtos/url.dto';
 import { UrlService } from './url.service';
 import { IpLogger } from '../../common/utils/ip-logger';
-import { isUrl } from '../url/utils/url-validate.util'
 import { NextFunction, Request } from 'express';
+import { UrlValidate } from '../url/utils/url-validate'
 
 @Controller()
 export class UrlController {
   constructor(
     private readonly urlService: UrlService,
+    private readonly urlValidate: UrlValidate
   ) {}
 
   @Get('/:newUrl')
@@ -30,13 +32,18 @@ export class UrlController {
   }
 
   @Post('shorten')
-  @UseGuards(IpLogger, isUrl)
+  @UseGuards(IpLogger)
   async shortenUrl(
     @Body() dto: UrlDTO,
     @Req() req: Request,
     next: NextFunction,
   ) {
     let ip = req.ip;
+    
+    const isUrl = await this.urlValidate.isUrl(dto)
+    console.log(isUrl)
+    if(!isUrl) throw new InternalServerErrorException("URL이 아닙니다.")
+
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
   }
