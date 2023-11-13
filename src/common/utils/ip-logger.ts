@@ -5,5 +5,6 @@ import { Request, Response, NextFunction } from 'express';
 export class IpLogger implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     req['clientIp'] = req.ip;
+  next()
   }
 }
