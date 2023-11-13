@@ -42,7 +42,7 @@ export class UrlController {
     
     const isUrl = await this.urlValidate.isUrl(dto)
     console.log(isUrl)
-    if(!isUrl) throw new InternalServerErrorException("URL이 아닙니다.")
+    if(!isUrl) throw new InternalServerErrorException("유효한 형태의 URL이 아닙니다.")
 
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
