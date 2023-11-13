@@ -34,7 +34,7 @@ export class UrlService {
 
       //단축 URL을 저장합니다.
       await this.urlRepository.saveNewUrl(dto, getNewUrl)
-      return
+      return { message : "URL을 단축하였습니다." }
     
     }
   }

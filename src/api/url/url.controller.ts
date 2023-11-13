@@ -14,14 +14,13 @@ import {
 import { UrlDTO } from './dtos/url.dto';
 import { UrlService } from './url.service';
 import { IpLogger } from '../../common/utils/ip-logger';
+import { isUrl } from '../url/utils/url-validate.util'
 import { NextFunction, Request } from 'express';
-import { UrlValidateUtil } from './utils/url-validate.util';
 
 @Controller()
 export class UrlController {
   constructor(
     private readonly urlService: UrlService,
-    private readonly urlValidate: UrlValidateUtil,
   ) {}
 
   @Get('/:newUrl')
@@ -34,7 +33,7 @@ export class UrlController {
   }
 
   @Post('shorten')
-  @UseGuards(IpLogger)
+  @UseGuards(IpLogger, isUrl)
   async shortenUrl(
     @Body() dto: UrlDTO,
     @Req() req: Request,
