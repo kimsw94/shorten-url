@@ -22,11 +22,11 @@ dotenv.config({ path: path.resolve(envPath) });
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'shortenURL',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [
           UrlEntity,
       ],
@@ -43,11 +43,5 @@ dotenv.config({ path: path.resolve(envPath) });
   ],
 })
 
-export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply(HttpApiExceptionFilter)
-  //     .forRoutes({ path: '*', method: RequestMethod.ALL }); 
-  // }
-}
+export class AppModule { }
 
