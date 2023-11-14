@@ -45,9 +45,4 @@ export class UrlService {
       return { message: 'URL을 단축하였습니다.', getNewUrl };
     }
   }
-
-  // async banUrl(newUrl: string, ip: string) {
-  //   const ban = await this.urlRepository.banUrl(ip, newUrl)
-  //   return { message: 'URL을 삭제하였습니다.', ban}
-  // }
 }

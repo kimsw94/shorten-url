@@ -38,7 +38,7 @@ class Application {
 
   startLog() {
     if(this.DEV_MODE) {
-      this.logger.log('Server on http://localshost:${ this.PORT }')
+      this.logger.log(`Server on http://localhost:${this.PORT}`);
     } else {
       this.logger.log('Server on port ${ this.PORT }')  
     }

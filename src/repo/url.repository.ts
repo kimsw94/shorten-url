@@ -44,11 +44,6 @@ export class UrlRepository {
             repo = repo.createQueryBuilder('URLS', 'u')
         }
       
-        // const today = new Date();
-        //     today.setHours(0, 0, 0, 0); 
-        // const tomorrow = new Date(today);
-        //     tomorrow.setDate(tomorrow.getDate() + 1); 
-
         const count = await repo
             .select('u.ip')
             .where('u.ip = :ip', { ip })
@@ -125,23 +120,4 @@ export class UrlRepository {
  
         return { result }
     }
-
-    // async banUrl(newUrl: string, ip: string, manager?: EntityManager) {
-    //     let repo = null;
-    //     if(manager) {
-    //         repo = manager.getRepository(UrlEntity)
-    //     } else {
-    //         repo = this.entityManager
-    //     }
-
-    //     const result = await repo
-    //         .createQueryBuilder()
-    //         .softDelete()
-    //         .from('URLS')
-    //         .where({ newUrl })
-    //         .andWhere({ ip })
-    //         .execute()
- 
-    //     return { result }
-    // }
 }
