@@ -8,12 +8,11 @@ import {
   Redirect,
   UseGuards,
   InternalServerErrorException,
-  Patch,
 } from '@nestjs/common';
 import { UrlDTO } from './dtos/url.dto';
 import { UrlService } from './url.service';
 import { IpLogger } from '../../common/utils/ip-logger';
-import { NextFunction, Request } from 'express';
+import { Request } from 'express';
 import { UrlValidate } from '../url/utils/url-validate'
 
 @Controller()
@@ -38,6 +37,7 @@ export class UrlController {
     @Body() dto: UrlDTO,
     @Req() req: Request,
   ) {
+
     let ip = req.ip;
     
     const isUrl = await this.urlValidate.isUrl(dto)
@@ -45,5 +45,6 @@ export class UrlController {
 
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
+ 
   }
 }
