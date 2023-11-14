@@ -37,7 +37,6 @@ export class UrlController {
   async shortenUrl(
     @Body() dto: UrlDTO,
     @Req() req: Request,
-    next: NextFunction,
   ) {
     let ip = req.ip;
     
@@ -47,15 +46,4 @@ export class UrlController {
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
   }
-
-  // @Patch('/:newUrl/ban')
-  // @UseGuards(IpLogger)
-  // async banUrl(
-  //   @Param('newUrl') newUrl: string,
-  //   @Req() req: Request
-  // ) {
-  //   let ip = req.ip
-  //   const banUrl = await this.urlService.banUrl(newUrl, ip);
-  //   return { banUrl };
-  // }
 }
