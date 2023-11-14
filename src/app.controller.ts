@@ -8,7 +8,7 @@ export class AppController {
     private readonly appService: AppService
   ) {}
 
-  @Get()
+  @Get('')
   async getRoot() {
     console.log("hello from app controller")
     return

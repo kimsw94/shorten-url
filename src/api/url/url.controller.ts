@@ -15,7 +15,7 @@ import { IpLogger } from '../../common/utils/ip-logger';
 import { Request } from 'express';
 import { UrlValidate } from '../url/utils/url-validate'
 
-@Controller()
+@Controller('/url')
 export class UrlController {
   constructor(
     private readonly urlService: UrlService,
@@ -36,6 +36,13 @@ export class UrlController {
 
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
+ 
+  }
+
+  @Get('shorten2')
+  async shorten(
+  ) {
+    return { "message" : "shortenUrl" };
  
   }
 }

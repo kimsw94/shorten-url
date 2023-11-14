@@ -17,7 +17,9 @@ class Application {
     if (this.DEV_MODE) {
       this.corsOriginList = [
         'http://localhost:3100',
-        'http://127.0.0.1:3100', 
+        'http://127.0.0.1:3100',
+        'http://192.168.1.132:3100/',
+        '*'
       ]
     } else {
       this.corsOriginList = [
@@ -27,6 +29,11 @@ class Application {
   }
 
   private async setUpGlobalMiddleware() {
+    // this.server.enableCors({
+    //   origin: this.corsOriginList,
+    //   credentials: true,
+    //   exposedHeaders: 'Content-Disposition',
+    // })
     this.server.useGlobalFilters(new HttpApiExceptionFilter())
   }
 
