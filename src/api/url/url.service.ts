@@ -46,8 +46,8 @@ export class UrlService {
     }
   }
 
-  async banUrl(newUrl: string, ip: string) {
-    const ban = await this.urlRepository.banUrl(ip, newUrl)
-    return { message: 'URL을 삭제하였습니다.', ban}
-  }
+  // async banUrl(newUrl: string, ip: string) {
+  //   const ban = await this.urlRepository.banUrl(ip, newUrl)
+  //   return { message: 'URL을 삭제하였습니다.', ban}
+  // }
 }

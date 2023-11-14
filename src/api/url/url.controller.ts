@@ -48,14 +48,14 @@ export class UrlController {
     return { shortenUrl };
   }
 
-  @Patch('/:newUrl/ban')
-  @UseGuards(IpLogger)
-  async banUrl(
-    @Param('newUrl') newUrl: string,
-    @Req() req: Request
-  ) {
-    let ip = req.ip
-    const banUrl = await this.urlService.banUrl(newUrl, ip);
-    return { banUrl };
-  }
+  // @Patch('/:newUrl/ban')
+  // @UseGuards(IpLogger)
+  // async banUrl(
+  //   @Param('newUrl') newUrl: string,
+  //   @Req() req: Request
+  // ) {
+  //   let ip = req.ip
+  //   const banUrl = await this.urlService.banUrl(newUrl, ip);
+  //   return { banUrl };
+  // }
 }

@@ -20,9 +20,6 @@ export class UrlEntity {
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   updated_at: Date;
-
-  @DeleteDateColumn() 
-  deleted_at: Date;
 }
