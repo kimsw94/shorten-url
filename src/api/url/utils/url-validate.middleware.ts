@@ -7,7 +7,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 export class isUrl implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#]+\.(com|co\.kr|net)(\/[^\s]*)?$/;
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.[^\s]{2,}(\/|$)/;
 
     if (urlRegex.test(req.body.url)) {
       next();
