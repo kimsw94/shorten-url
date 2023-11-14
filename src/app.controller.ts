@@ -16,6 +16,7 @@ export class AppController {
 
   @Get('/:newUrl')
   @Redirect('', 302)
+  
   async redirectUrl(@Param('newUrl') newUrl: string) {
     const getUrlInfo = await this.appService.getUrl(newUrl);
     const redirectUrl = getUrlInfo.url;

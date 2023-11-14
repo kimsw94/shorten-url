@@ -7,30 +7,34 @@ import { json, urlencoded } from 'body-parser'
 
 class Application {
   private logger = new Logger(Application.name)
-  private corsOriginList: string[]
+  // private corsOriginList: string[]
   private DEV_MODE: boolean
   private PORT: string
 
   constructor(private server: NestExpressApplication) {
     this.server = server
     this.DEV_MODE = process.env.NODE_ENV === 'production' ? false : true
-    if (this.DEV_MODE) {
-      this.corsOriginList = [
-        'http://localhost:3100',
-        'http://127.0.0.1:3100',
-        'http://192.168.1.132:3100/',
-        '*'
-      ]
-    } else {
-      this.corsOriginList = [
-      ]
-    }
+    // if (this.DEV_MODE) {
+    //   this.corsOriginList = [
+    //     'http://localhost:3100',
+    //     'http://127.0.0.1:3100',
+    //     'http://192.168.1.132:3100/',
+    //     '*'
+    //   ]
+    // } else {
+    //   this.corsOriginList = [
+    //     'http://localhost:3100',
+    //     'http://127.0.0.1:3100',
+    //     'http://192.168.1.132:3100/',
+    //     '*'
+    //   ]
+    // }
     this.PORT = process.env.PORT || '3100'
   }
 
   private async setUpGlobalMiddleware() {
     // this.server.enableCors({
-    //   origin: this.corsOriginList,
+    //   origin: this.corsOri:qginList,
     //   credentials: true,
     //   exposedHeaders: 'Content-Disposition',
     // })

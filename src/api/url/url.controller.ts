@@ -7,6 +7,7 @@ import {
   Req,
   Redirect,
   UseGuards,
+  Options,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UrlDTO } from './dtos/url.dto';
@@ -23,10 +24,10 @@ export class UrlController {
   ) {}
 
   @Post('shorten')
-  @UseGuards(IpLogger)
+  @UseGuards(IpLogger) 
   async shortenUrl(
     @Body() dto: UrlDTO,
-    @Req() req: Request,
+    @Req() req: Request, 
   ) {
 
     let ip = req.ip;
