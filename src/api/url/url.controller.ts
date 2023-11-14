@@ -22,15 +22,6 @@ export class UrlController {
     private readonly urlValidate: UrlValidate
   ) {}
 
-  @Get('/:newUrl')
-  @Redirect('', 302)
-  async redirectUrl(@Param('newUrl') newUrl: string) {
-    const getUrlInfo = await this.urlService.getUrl(newUrl);
-    const redirectUrl = getUrlInfo.url;
-
-    return { url: redirectUrl };
-  }
-
   @Post('shorten')
   @UseGuards(IpLogger)
   async shortenUrl(

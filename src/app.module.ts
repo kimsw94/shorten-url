@@ -4,6 +4,8 @@ import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.f
 import { AppController } from './app.controller';
 import { UrlModule } from './api/url/url.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppService } from './app.service';
+import { UrlRepository } from './repo/url.repository';
 import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv'
 import * as path from 'path'
@@ -39,8 +41,10 @@ dotenv.config({ path: path.resolve(envPath) });
     {
     provide: APP_FILTER,
     useClass: HttpApiExceptionFilter,
-  }
-  ],
+  },
+  AppService,
+  UrlRepository
+  ]
 })
 
 export class AppModule { }
