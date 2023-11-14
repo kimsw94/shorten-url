@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity({
   name: 'URLS',
@@ -17,9 +17,12 @@ export class UrlEntity {
   @Column({ type: 'varchar' })
   ip: string
 
-  @CreateDateColumn() // 이 데코레이터를 사용하여 created_at 필드를 설정
+  @CreateDateColumn()
   created_at: Date;
 
-  @CreateDateColumn() // 이 데코레이터를 사용하여 created_at 필드를 설정
+  @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn() 
+  deleted_at: Date;
 }

@@ -8,6 +8,7 @@ import {
   Redirect,
   UseGuards,
   InternalServerErrorException,
+  Patch,
 } from '@nestjs/common';
 import { UrlDTO } from './dtos/url.dto';
 import { UrlService } from './url.service';
@@ -45,5 +46,16 @@ export class UrlController {
 
     const shortenUrl = await this.urlService.shortenUrl(dto, ip);
     return { shortenUrl };
+  }
+
+  @Patch('/:newUrl/ban')
+  @UseGuards(IpLogger)
+  async banUrl(
+    @Param('newUrl') newUrl: string,
+    @Req() req: Request
+  ) {
+    let ip = req.ip
+    const banUrl = await this.urlService.banUrl(newUrl, ip);
+    return { banUrl };
   }
 }

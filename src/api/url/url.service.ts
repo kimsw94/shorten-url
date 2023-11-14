@@ -45,6 +45,11 @@ export class UrlService {
       return { message: 'URL을 단축하였습니다.', getNewUrl }; // 완료되면 응답값을 리턴합니다.
     }
   }
+
+  async banUrl(newUrl: string, ip: string) {
+    const ban = await this.urlRepository.banUrl(ip, newUrl)
+    return { message: 'URL을 삭제하였습니다.', ban}
+  }
 }
 
 // 해당 로직을 분리한 이유는, 트랜잭션 롤백을 최소화하기위해, 서비스 레이어의 함수를 추가 구성하여 트랜잭션 롤백을 최소화하였습니다.
