@@ -16,3 +16,5 @@ export class isUrl implements NestMiddleware {
     }
   }
 }
+
+export class AppModule { }

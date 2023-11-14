@@ -56,10 +56,3 @@ async function init(): Promise<void> {
 init().catch((error) => {
   new Logger('init').error(error)
 })
-
-
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   await app.listen(3000);
-// }
-// bootstrap();
