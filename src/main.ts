@@ -31,8 +31,7 @@ class Application {
 
   private async setUpGlobalMiddleware() {
     this.server.enableCors({
-      // origin: this.corsOriginList,
-      origin: '*',
+      origin: this.corsOriginList,
       credentials: true,
       exposedHeaders: 'Content-Disposition',
     });

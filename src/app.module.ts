@@ -1,7 +1,6 @@
 import {
   Module,
   MiddlewareConsumer,
-  NestModule,
   RequestMethod,
 } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';

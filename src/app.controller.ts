@@ -3,7 +3,6 @@ import {
   Get,
   Redirect,
   Param,
-  Res,
   Req,
   Body,
   Post,
@@ -15,7 +14,6 @@ import { Request } from 'express';
 import { IpLogger } from './common/utils/ip-logger';
 import { UrlDTO } from './dtos/app.dto';
 import { UrlValidate } from './common/utils/url-validate';
-import { UrlGenerate } from './common/utils/url-generate';
 
 @Controller()
 export class AppController {
