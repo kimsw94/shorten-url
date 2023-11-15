@@ -23,10 +23,7 @@ class Application {
       ];
     } else {
       this.corsOriginList = [
-        // 'http://localhost:3100',
-        // 'http://127.0.0.1:3100', 'http://127.0.0.1:3306',
-        // 'http://192.168.1.132:3100',
-        // '*'
+
       ];
     }
     this.PORT = process.env.PORT || '3100';

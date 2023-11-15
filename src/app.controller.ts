@@ -47,10 +47,10 @@ export class AppController {
   }
 
 
-  @Post('/shorten')
+  @Post('/@/shorten')
   @UseGuards(IpLogger)
   async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request) {
-
+    console.log("컨트롤러로 들어옴")
     let ip = req.ip
   
     const isUrl = await this.urlValidate.isUrl(dto);
