@@ -12,7 +12,7 @@ import { AppService } from './app.service';
 import { IpLogger } from './common/utils/ip-logger';
 import { UrlGenerate } from './common/utils/url-generate';
 import { UrlValidate } from './common/utils/url-validate';
-import { UrlRepository } from './repo/url.repository';
+import { AppRepository } from './repo/app.repository';
 import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
@@ -54,9 +54,9 @@ dotenv.config({ path: path.resolve(envPath) });
       useClass: HttpApiExceptionFilter,
     },
     AppService,
-    UrlRepository, 
-    UrlGenerate, 
-    UrlValidate
+    AppRepository,
+    UrlGenerate,
+    UrlValidate,
   ],
 })
 export class AppModule {

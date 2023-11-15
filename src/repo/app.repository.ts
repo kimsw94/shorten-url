@@ -9,7 +9,7 @@ type UrlDataType = {
 }
 
 @Injectable()
-export class UrlRepository {
+export class AppRepository {
     constructor(
         private readonly entityManager: EntityManager
     ) { }

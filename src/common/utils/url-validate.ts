@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UrlDTO } from '../../api/url/dtos/url.dto';
+import { UrlDTO } from '../../dtos/app.dto';
 
 @Injectable()
 export class UrlValidate {

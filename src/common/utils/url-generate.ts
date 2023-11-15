@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UrlRepository } from '../../repo/url.repository';
-import { UrlDTO } from '../../api/url/dtos/url.dto';
+import { AppRepository } from '../../repo/app.repository';
+import { UrlDTO } from '../../dtos/app.dto';
 
 @Injectable()
 export class UrlGenerate {
-  constructor(private readonly urlRepository: UrlRepository) {}
+  constructor(private readonly appRepository: AppRepository) {}
 
   async newUrl(dto: UrlDTO, ip: string) {
     // URL의 id값을 불러옵니다.
-    const data = await this.urlRepository.getUrlInfo(dto);
+    const data = await this.appRepository.getUrlInfo(dto);
     const id = data.id;
-    if (!id) await this.urlRepository.saveInfo(dto, ip);
+    if (!id) await this.appRepository.saveInfo(dto, ip);
 
     //ID값을 62진수로 변환합니다.
     function decimalTo62(id: number): string {

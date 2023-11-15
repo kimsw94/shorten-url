@@ -13,7 +13,7 @@ import {
 import { AppService } from './app.service';
 import { Request } from 'express';
 import { IpLogger } from './common/utils/ip-logger';
-import { UrlDTO } from './api/url/dtos/url.dto';
+import { UrlDTO } from './dtos/app.dto';
 import { UrlValidate } from './common/utils/url-validate';
 import { UrlGenerate } from './common/utils/url-generate';
 
@@ -21,10 +21,10 @@ import { UrlGenerate } from './common/utils/url-generate';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly urlValidate: UrlValidate
+    private readonly urlValidate: UrlValidate,
   ) {}
 
-  @Get('')
+  @Get()
   async getRoot() {
     console.log('hello from app controller');
     return { message: 'hello' };
@@ -46,15 +46,14 @@ export class AppController {
     return { url: getUrl };
   }
 
-
-  @Post('/@/shorten')
+  @Post('/shorten')
   @UseGuards(IpLogger)
   async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request) {
-    console.log("컨트롤러로 들어옴")
-    let ip = req.ip
-  
+    let ip = req.ip;
+
     const isUrl = await this.urlValidate.isUrl(dto);
-    if (!isUrl) throw new InternalServerErrorException('유효한 형태의 URL이 아닙니다.');
+    if (!isUrl)
+      throw new InternalServerErrorException('유효한 형태의 URL이 아닙니다.');
 
     const shortenUrl = await this.appService.shortenUrl(dto, ip);
     return { shortenUrl };
