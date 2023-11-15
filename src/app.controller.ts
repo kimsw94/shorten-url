@@ -39,13 +39,6 @@ export class AppController {
     return { url: redirectUrl };
   }
 
-  @Get('/:newUrl/get')
-  async getUrl(@Param('newUrl') newUrl: string) {
-    const getUrlInfo = await this.appService.getUrl(newUrl);
-    const getUrl = getUrlInfo.url;
-    return { url: getUrl };
-  }
-
   @Post('/shorten')
   @UseGuards(IpLogger)
   async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request) {
