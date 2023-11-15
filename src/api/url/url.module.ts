@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlController } from './url.controller';
 import { UrlService } from './url.service';
 import { UrlRepository } from '../../repo/url.repository';
-import { UrlGenerate } from './utils/url-generate';
+import { UrlGenerate } from '../../common/utils/url-generate';
 import { UrlEntity } from '../../entities/url.entity';
 import { IpLogger } from '../../common/utils/ip-logger';
-import { UrlValidate } from './utils/url-validate'
+import { UrlValidate } from '../../common/utils/url-validate';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlEntity])],

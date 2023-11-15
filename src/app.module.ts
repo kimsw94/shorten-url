@@ -1,21 +1,35 @@
-import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core'
+import {
+  Module,
+  MiddlewareConsumer,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { AppController } from './app.controller';
-import { UrlModule } from './api/url/url.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
+import { IpLogger } from './common/utils/ip-logger';
+import { UrlGenerate } from './common/utils/url-generate';
+import { UrlValidate } from './common/utils/url-validate';
 import { UrlRepository } from './repo/url.repository';
 import { UrlEntity } from './entities/url.entity';
-import * as dotenv from 'dotenv'
-import * as path from 'path'
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
-  case 'dev': envPath = 'envs/.local.env'; break;
-  case 'staging': envPath = 'envs/.staging.env'; break;
-  case 'prod': envPath = 'envs/.prod.env'; break;
-  default: envPath = 'envs/.local.env'
+  case 'dev':
+    envPath = 'envs/.local.env';
+    break;
+  case 'staging':
+    envPath = 'envs/.staging.env';
+    break;
+  case 'prod':
+    envPath = 'envs/.prod.env';
+    break;
+  default:
+    envPath = 'envs/.local.env';
 }
 
 dotenv.config({ path: path.resolve(envPath) });
@@ -29,23 +43,26 @@ dotenv.config({ path: path.resolve(envPath) });
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [
-          UrlEntity,
-      ],
+      entities: [UrlEntity],
       synchronize: false,
     }),
-    UrlModule,
   ],
   controllers: [AppController],
   providers: [
     {
-    provide: APP_FILTER,
-    useClass: HttpApiExceptionFilter,
-  },
-  AppService,
-  UrlRepository
-  ]
+      provide: APP_FILTER,
+      useClass: HttpApiExceptionFilter,
+    },
+    AppService,
+    UrlRepository, 
+    UrlGenerate, 
+    UrlValidate
+  ],
 })
-
-export class AppModule { }
-
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(IpLogger)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

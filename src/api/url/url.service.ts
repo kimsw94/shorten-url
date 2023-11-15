@@ -3,7 +3,7 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { UrlGenerate } from './utils/url-generate';
+import { UrlGenerate } from '../../common/utils/url-generate';
 import { UrlRepository } from '../../repo/url.repository';
 import { UrlDTO } from './dtos/url.dto';
 import { startOfDay, endOfDay } from 'date-fns';
@@ -29,7 +29,9 @@ export class UrlService {
 
     const count = await this.urlRepository.countIp(ip, today, tomorrow);
     if (count > 30)
-      throw new InternalServerErrorException('요청 횟수가 30회를 초과하였습니다.');
+      throw new InternalServerErrorException(
+        '요청 횟수가 30회를 초과하였습니다.',
+      );
 
     const check = await this.urlRepository.getUrlInfo(dto);
     if (check)
