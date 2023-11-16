@@ -17,6 +17,8 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { IpCount } from './common/utils/ip-count';
 import { IpTime } from './common/utils/ip-time';
+import { IpServer } from './common/utils/ip-server'
+import { IpClean } from './common/utils/ip-clean';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
@@ -58,14 +60,16 @@ dotenv.config({ path: path.resolve(envPath) });
     AppRepository,
     UrlGenerate,
     UrlValidate,
+    IpServer,
     IpCount,
-    IpTime
+    IpTime,
+    IpClean
   ],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(IpLogger)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(IpLogger, IpServer)
+  //     .forRoutes({ path: '*', method: RequestMethod.ALL });
+  // }
 }

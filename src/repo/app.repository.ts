@@ -33,7 +33,7 @@ export class AppRepository {
         return result
     }
 
-    async countIp(ip: String, today:string, tomorrow: string, manager?: EntityManager) {
+    async countIp(clientIp: String, today:string, tomorrow: string, manager?: EntityManager) {
         let repo = null;
 
         if(manager) {
@@ -46,7 +46,7 @@ export class AppRepository {
       
         const count = await repo
             .select('u.ip')
-            .where('u.ip = :ip', { ip })
+            .where('u.ip = :ip', { ip: clientIp })
             .andWhere('u.created_at >= :startOfDay', { startOfDay: today })
             .andWhere('u.created_at < :endOfDay', { endOfDay: tomorrow })
             .getCount();

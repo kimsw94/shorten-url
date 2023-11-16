@@ -7,14 +7,14 @@ import { startOfDay, endOfDay } from 'date-fns';
 export class IpCount {
   constructor(private readonly appRepository: AppRepository) {}
 
-  async ipCount(dto: UrlDTO, ip: string) {
+  async ipCount(dto: UrlDTO, clientIp: string) {
     let today = startOfDay(new Date()).toISOString();
     let tomorrow = endOfDay(new Date()).toISOString();
 
     if (!dto.url)
       throw new InternalServerErrorException('단축할 URL을 입력해주세요.');
 
-    const count = await this.appRepository.countIp(ip, today, tomorrow);
+    const count = await this.appRepository.countIp(clientIp, today, tomorrow);
     return count
   }
 }

@@ -19,11 +19,10 @@ class Application {
 
     if (this.DEV_MODE) {
       this.corsOriginList = [
-        '*',
+        '*'
       ];
     } else {
       this.corsOriginList = [
-        //배포환경입력
       ];
     }
 
@@ -33,8 +32,7 @@ class Application {
  
   private async setUpGlobalMiddleware() {
     this.server.enableCors({
-      origin: this.corsOriginList[0],
-      // origin: '*',
+      origin: '*',
       credentials: true,
       exposedHeaders: 'Content-Disposition',
     });
@@ -50,7 +48,7 @@ class Application {
     if (this.DEV_MODE) {
       this.logger.log(`Server on http://localhost:${this.PORT}`);
     } else {
-      this.logger.log('Server on port ${ this.PORT }');
+      this.logger.log(`Server on port ${this.PORT}`);
     }
   }
 }
