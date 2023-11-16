@@ -8,10 +8,12 @@ import { json, urlencoded } from 'body-parser';
 class Application {
   private logger = new Logger(Application.name);
   private DEV_MODE: boolean;
-  public corsOriginList: string[]
+  private corsOriginList: string[]
   private PORT: string;
 
-  constructor(private server: NestExpressApplication) {
+  constructor(
+    private server: NestExpressApplication
+    ) {
     this.server = server;
     this.DEV_MODE = process.env.NODE_ENV === 'production' ? false : true;
 
@@ -20,16 +22,19 @@ class Application {
         '*',
       ];
     } else {
-      this.corsOriginList = [];
+      this.corsOriginList = [
+        //배포환경입력
+      ];
     }
 
     this.PORT = process.env.PORT || '3100';
   }
+
  
   private async setUpGlobalMiddleware() {
     this.server.enableCors({
-      // origin: this.corsOriginList,
-      origin: '*',
+      origin: this.corsOriginList[0],
+      // origin: '*',
       credentials: true,
       exposedHeaders: 'Content-Disposition',
     });
