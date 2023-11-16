@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IpCount } from './ip-count';
-import { IpTime } from './ip-time';
 import { UrlDTO } from '../../dtos/app.dto';
 
 @Injectable()
