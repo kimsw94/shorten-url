@@ -15,6 +15,8 @@ import { AppRepository } from './repo/app.repository';
 import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { IpCount } from './common/utils/ip-count';
+import { IpTime } from './common/utils/ip-time';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
@@ -56,6 +58,8 @@ dotenv.config({ path: path.resolve(envPath) });
     AppRepository,
     UrlGenerate,
     UrlValidate,
+    IpCount,
+    IpTime
   ],
 })
 export class AppModule {

@@ -73,7 +73,25 @@ export class AppRepository {
         return result
     }
 
-    async saveInfo(dto: UrlDataType, ip: string, manager?: EntityManager) {
+    async getNewUrlInfo(getNewUrl: string, manager?: EntityManager) {
+        let repo = null;
+
+        if(manager) {
+            repo = manager.getRepository(UrlEntity)
+            repo = repo.createQueryBuilder('u')
+        } else {
+            repo = this.entityManager
+            repo = repo.createQueryBuilder('URLS', 'u')
+        }
+
+        const result = await repo
+            .where('u.newUrl = :newUrl', { newUrl: getNewUrl })
+            .getOne()
+
+        return result
+    }
+
+    async saveInfo(dto: UrlDataType, ip: string, getNewUrl: string, manager?: EntityManager) {
         let repo = null;
         if(manager) {
             repo = manager.getRepository(UrlEntity)
@@ -89,7 +107,7 @@ export class AppRepository {
             .values(
                 {
                 url: dto.url,
-                newUrl: "0",
+                newUrl: getNewUrl,
                 ip: ip,
                 },
             )

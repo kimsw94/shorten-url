@@ -1,35 +1,61 @@
 import { Injectable } from '@nestjs/common';
-import { AppRepository } from '../../repo/app.repository';
+import { IpCount } from './ip-count';
+import { IpTime } from './ip-time';
 import { UrlDTO } from '../../dtos/app.dto';
 
 @Injectable()
 export class UrlGenerate {
-  constructor(private readonly appRepository: AppRepository) {}
+  constructor(private readonly ipCount: IpCount) {}
 
-  async newUrl(dto: UrlDTO, ip: string) {
-    // URL의 id값을 불러옵니다.
-    const data = await this.appRepository.getUrlInfo(dto);
-    const id = data.id;
-    if (!id) await this.appRepository.saveInfo(dto, ip);
-
-    //ID값을 62진수로 변환합니다.
-    function decimalTo62(id: number): string {
+  async newUrlByTime(dto: UrlDTO, ip: string) {
+    const time = Number(new Date());
+    const count = await this.ipCount.ipCount(dto, ip);
+    function timeTo62(time: number): string {
       const characters =
         '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       const base = characters.length;
       let result = '';
 
       do {
-        const remainder = id % base;
+        const remainder = time % base;
         result = characters[remainder] + result;
-        id = Math.floor(id / base);
-      } while (id > 0);
+        time = Math.floor(time / base);
+      } while (time > 0);
 
       return result;
     }
 
-    const encodedId = decimalTo62(id);
+    function countTo62(count: number): string {
+      const characters =
+        '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const base = characters.length;
+      let result = '';
 
-    return encodedId;
+      do {
+        const remainder = count % base;
+        result = characters[remainder] + result;
+        count = Math.floor(count / base);
+      } while (count > 0);
+
+      return result;
+    }
+
+    const encodedCount = countTo62(count);
+    const encodedTime = timeTo62(time);
+
+    return `${encodedTime}${encodedCount}`;
+  }
+
+  async newUrlByRandom() {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+
+    for (let i = 0; i < 7; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+
+    return randomString;
   }
 }
