@@ -64,7 +64,7 @@ dotenv.config({ path: path.resolve(envPath) });
 export class AppModule {
   // configure(consumer: MiddlewareConsumer) {
   //   consumer
-  //     .apply(IpLogger, IpServer)
+  //     .apply()
   //     .forRoutes({ path: '*', method: RequestMethod.ALL });
   // }
 }
