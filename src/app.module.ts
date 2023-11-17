@@ -8,7 +8,6 @@ import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.f
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { IpLogger } from './common/utils/ip-logger';
 import { UrlGenerate } from './common/utils/url-generate';
 import { UrlValidate } from './common/utils/url-validate';
 import { AppRepository } from './repo/app.repository';
@@ -16,7 +15,6 @@ import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { IpCount } from './common/utils/ip-count';
-import { IpServer } from './common/utils/ip-server'
 import { IpClean } from './common/utils/ip-clean';
 
 let envPath: string;
@@ -59,7 +57,6 @@ dotenv.config({ path: path.resolve(envPath) });
     AppRepository,
     UrlGenerate,
     UrlValidate,
-    IpServer,
     IpCount,
     IpClean
   ],

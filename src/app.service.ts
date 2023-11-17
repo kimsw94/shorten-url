@@ -22,7 +22,7 @@ export class AppService {
       throw new InternalServerErrorException('단축할 URL을 입력해주세요.');
 
     const count = await this.ipCount.ipCount(dto, clientIp);
-    if (count > 30)
+    if (count > 300)
       throw new InternalServerErrorException(
         '요청 횟수가 30회를 초과하였습니다.',
       );

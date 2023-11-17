@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 export class IpClean {
   async clientIpClean(req: Request) {
     let cleanIp;
-    let clientIp = req.connection.remoteAddress;
+    let clientIp = req.ip;
 
     if (clientIp.includes('::ffff:')) {
       cleanIp = clientIp.split('::ffff:')[1];
@@ -18,7 +18,7 @@ export class IpClean {
 
   async serverIpClean(req: Request) {
     let cleanIp;
-    let serverIp = req.connection.remoteAddress;
+    let serverIp = req.connection.localAddress;
 
     if (serverIp.includes('::ffff:')) {
       cleanIp = serverIp.split('::ffff:')[1];

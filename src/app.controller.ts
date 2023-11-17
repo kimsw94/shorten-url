@@ -11,14 +11,14 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import { IpLogger } from './common/utils/ip-logger';
 import { UrlDTO } from './dtos/app.dto';
 import { UrlValidate } from './common/utils/url-validate';
-import { IpServer } from './common/utils/ip-server';
 import { IpClean } from './common/utils/ip-clean';
 
 @Controller()
 export class AppController {
+  private DEV_MODE: boolean;
+  
   constructor(
     private readonly appService: AppService,
     private readonly urlValidate: UrlValidate,
@@ -41,16 +41,16 @@ export class AppController {
   }
 
   @Post('/shorten')
-  @UseGuards(IpLogger)
   async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request) {
     const clientIp = await this.ipClean.clientIpClean(req);
     const serverIp = await this.ipClean.serverIpClean(req);
+    const serverPort = process.env.PORT;
 
     const isUrl = await this.urlValidate.isUrl(dto);
     if (!isUrl) throw new InternalServerErrorException('유효한 형태의 URL이 아닙니다.');
 
     const shortenUrl = await this.appService.shortenUrl(dto, clientIp);
-    const getNewUrl = `http://${serverIp}/${shortenUrl.getNewUrl}`;
+    const getNewUrl = `http://${serverIp}:${serverPort}/${shortenUrl.getNewUrl}`;
     shortenUrl.getNewUrl = getNewUrl;
     return shortenUrl;
   }
