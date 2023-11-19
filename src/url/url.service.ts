@@ -1,11 +1,11 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AppRepository } from './repo/app.repository';
-import { UrlGenerate } from './common/utils/url-generate';
-import { IpCount } from './common/utils/ip-count';
-import { UrlDTO } from './dtos/app.dto';
+import { AppRepository } from 'src/repo/app.repository';
+import { UrlGenerate } from 'src/common/utils/url-generate';
+import { IpCount } from 'src/common/utils/ip-count';
+import { UrlDTO } from 'src/dtos/app.dto';
 
 @Injectable()
-export class AppService {
+export class UrlService {
   constructor(
     private readonly appRepository: AppRepository,
     private readonly urlGenerate: UrlGenerate,
@@ -38,14 +38,5 @@ export class AppService {
         return { message: 'URL을 단축하였습니다.', getNewUrl };
       }
     } while (!check);
-
-    // const getNewUrl = await this.urlGenerate.newUrlByRandom();
-    // const check = await this.appRepository.getNewUrlInfo(getNewUrl);
-    // if (!check) {
-    //   await this.appRepository.saveInfo(dto, clientIp, getNewUrl);
-    //   return { message: 'URL을 단축하였습니다.', getNewUrl };
-    // } else {
-    //   throw new InternalServerErrorException('다시 시도해주세요');
-    // }
   }
 }

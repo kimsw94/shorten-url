@@ -1,21 +1,12 @@
-import {
-  Module,
-  MiddlewareConsumer,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppService } from './app.service';
-import { UrlGenerate } from './common/utils/url-generate';
-import { UrlValidate } from './common/utils/url-validate';
-import { AppRepository } from './repo/app.repository';
+import { UrlModule } from './url/url.module';
 import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import { IpCount } from './common/utils/ip-count';
-import { IpClean } from './common/utils/ip-clean';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
@@ -46,6 +37,7 @@ dotenv.config({ path: path.resolve(envPath) });
       entities: [UrlEntity],
       synchronize: false,
     }),
+    UrlModule,
   ],
   controllers: [AppController],
   providers: [
@@ -53,12 +45,6 @@ dotenv.config({ path: path.resolve(envPath) });
       provide: APP_FILTER,
       useClass: HttpApiExceptionFilter,
     },
-    AppService,
-    AppRepository,
-    UrlGenerate,
-    UrlValidate,
-    IpCount,
-    IpClean
   ],
 })
 export class AppModule {
