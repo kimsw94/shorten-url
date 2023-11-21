@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { AppController } from './app.controller';
@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { UsersModule } from './api/users/users.module';
 import { UsersEntity } from './entities/user.entity';
+import * as cookieParser from 'cookie-parser';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
@@ -51,10 +52,8 @@ dotenv.config({ path: path.resolve(envPath) });
     },
   ],
 })
-export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply()
-  //     .forRoutes({ path: '*', method: RequestMethod.ALL });
-  // }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(cookieParser()).forRoutes('*');
+  }
 }

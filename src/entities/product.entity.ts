@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity({
-  name: 'users',
+  name: 'products',
 })
 
 export class UsersEntity {
@@ -9,22 +9,10 @@ export class UsersEntity {
   id: number
 
   @Column({ type: 'varchar' })
-  username: string
+  name: string
 
   @Column({ type: 'varchar' })
-  password: string
-
-  @Column({ type: 'varchar' })
-  address: string
-
-  @Column({ type: 'varchar' })
-  phone: string
-
-  @Column({ type: 'varchar' })
-  ip: string
-
-  @Column({ type: 'varchar' })
-  product_id: string
+  description: string
 
   @CreateDateColumn()
   created_at: Date;

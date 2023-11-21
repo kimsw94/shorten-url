@@ -1,16 +1,17 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
   Req,
   Res,
   UseGuards,
-  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersDTO } from './dtos/users.dto';
+import { UrlValidate } from 'src/common/utils/url-validate';
+import { UrlService } from '../urls/url.service';
 import { IpClean } from 'src/common/utils/ip-clean';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/jwt/jwt.guard';
 
@@ -18,6 +19,8 @@ import { JwtAuthGuard } from 'src/jwt/jwt.guard';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly urlService: UrlService,
+    private readonly urlValidate: UrlValidate,
     private readonly ipClean: IpClean,
   ) {}
 
@@ -28,23 +31,15 @@ export class UsersController {
     return signUp;
   }
 
-  // @Post('sign-in')
-  // @UseGuards(JwtAuthGuard)
-  // async signIn(@Body() dto: UsersDTO) {
-  
-  //   const username = dto.username
-  //   const password = dto.password
-  //   const user = await this.usersService.verifyUserAndSignJwt(username, password);
-  //   return { user: user, success: true };
-  // }
-
   @Post('sign-in')
   @UseGuards(JwtAuthGuard)
-  async signIn(@Body() dto: UsersDTO, @Req() req: Request) {
-    const user = await this.usersService.signIn(dto);
-    return { 
-      message: "success",
-      jwt: user.jwt
-    }
-}
+  async signIn(
+    @Body() dto: UsersDTO,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { user, jwt } = await this.usersService.signIn(dto);
+    res.cookie('jwt', jwt, { httpOnly: false });
+    return { success: true, user: user, jwt };
+  }
 }

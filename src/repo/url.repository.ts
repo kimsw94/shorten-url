@@ -6,6 +6,7 @@ type UrlDataType = {
     originalUrl: string,
     newUrl: string,
     ip: string;
+    user_id: number,
 }
 
 @Injectable()
@@ -109,6 +110,7 @@ export class UrlRepository {
                 originalUrl: dto.originalUrl,
                 newUrl: getNewUrl,
                 ip: ip,
+                user_id: dto.user_id,
                 },
             )
             .execute()

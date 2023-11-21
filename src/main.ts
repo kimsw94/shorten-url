@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { json, urlencoded } from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 
 class Application {
   private logger = new Logger(Application.name);
@@ -35,12 +36,14 @@ class Application {
       credentials: true,
       exposedHeaders: 'Content-Disposition',
     });
+    this.server.use(cookieParser())
     
     this.server.useGlobalFilters(new HttpApiExceptionFilter());
   }
 
   async bootstrap() {
     await this.setUpGlobalMiddleware();
+    await this.server.use(cookieParser())
     await this.server.listen(this.PORT);
   }
 

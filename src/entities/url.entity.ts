@@ -17,6 +17,15 @@ export class UrlEntity {
   @Column({ type: 'varchar' })
   ip: string
 
+  @Column({ type: 'varchar' })
+  user_id: number
+
+  @Column({ type: 'varchar' })
+  product_id: number
+
+  @Column({ type: 'int' })
+  redirect: number
+
   @CreateDateColumn()
   created_at: Date;
 

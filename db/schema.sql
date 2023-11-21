@@ -10,6 +10,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `products`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(10000) NOT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `schema_migrations`
 --
 
@@ -33,6 +50,8 @@ CREATE TABLE `urls` (
   `newUrl` varchar(1000) DEFAULT NULL,
   `ip` varchar(1000) NOT NULL,
   `user_id` int DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
+  `redirect` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -51,6 +70,7 @@ CREATE TABLE `users` (
   `username` varchar(10000) NOT NULL,
   `password` varchar(1000) NOT NULL,
   `address` varchar(1000) DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
   `phone` varchar(1000) DEFAULT NULL,
   `ip` varchar(1000) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -82,5 +102,6 @@ CREATE TABLE `users` (
 LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
   ('20231120040731'),
-  ('20231120040749');
+  ('20231120040749'),
+  ('20231121022718');
 UNLOCK TABLES;

@@ -7,9 +7,20 @@ import { UrlValidate } from 'src/common/utils/url-validate';
 import { IpCount } from 'src/common/utils/ip-count';
 import { IpClean } from 'src/common/utils/ip-clean';
 import { UrlRepository } from 'src/repo/url.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [UrlEntity],
+  imports: [
+    TypeOrmModule.forFeature([
+      UrlEntity
+    ]),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      session: false
+    }),
+    UrlEntity,
+  ],
   providers: [
     UrlService,
     UrlRepository,

@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
@@ -16,9 +17,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        // jwtFromRequest: ExtractJwt.fromExtractors([jwtExtractorFromHeaders]),
         secretOrKey: process.env.JWT_KEY || 'default-secret', // 기본 값 설정
         ignoreExpiration: false,
       })
+      
   }
 
   async validate(payload: JwtPayload) {

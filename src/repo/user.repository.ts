@@ -53,8 +53,8 @@ export class UsersRepository {
     }
    
     const result = await repo
-      .select('users.password') // 엔터티의 별칭과 함께 필드 선택
-      .from('users') // 엔터티 클래스와 엔터티의 별칭 설정
+      .select('users.password') 
+      .from('users') 
       .where('users.username = :username', { username }) // 플레이스홀더 사용
       .getOne();
 
