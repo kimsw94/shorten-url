@@ -3,13 +3,13 @@ import { UrlEntity } from "../entities/url.entity"
 import { Injectable } from '@nestjs/common'
 
 type UrlDataType = {
-    url: string,
+    originalUrl: string,
     newUrl: string,
     ip: string;
 }
 
 @Injectable()
-export class AppRepository {
+export class UrlRepository {
     constructor(
         private readonly entityManager: EntityManager
     ) { }
@@ -22,11 +22,11 @@ export class AppRepository {
             repo = repo.createQueryBuilder('u')
         } else {
             repo = this.entityManager
-            repo = repo.createQueryBuilder('URLS', 'u')
+            repo = repo.createQueryBuilder('urls', 'u')
         }
 
         const result = await repo
-            .select(['u.url'])
+            .select(['u.originalUrl'])
             .where('u.newUrl = :newUrl', { newUrl })
             .getOne()
   
@@ -41,7 +41,7 @@ export class AppRepository {
             repo = repo.createQueryBuilder('u')
         } else {
             repo = this.entityManager
-            repo = repo.createQueryBuilder('URLS', 'u')
+            repo = repo.createQueryBuilder('urls', 'u')
         }
       
         const count = await repo
@@ -62,12 +62,12 @@ export class AppRepository {
             repo = repo.createQueryBuilder('u')
         } else {
             repo = this.entityManager
-            repo = repo.createQueryBuilder('URLS', 'u')
+            repo = repo.createQueryBuilder('urls', 'u')
         }
 
-        const url = dto.url
+        const url = dto.originalUrl
         const result = await repo
-            .where('u.url = :url', { url })
+            .where('u.originalUrl = :originalUrl', { url })
             .getOne()
 
         return result
@@ -81,7 +81,7 @@ export class AppRepository {
             repo = repo.createQueryBuilder('u')
         } else {
             repo = this.entityManager
-            repo = repo.createQueryBuilder('URLS', 'u')
+            repo = repo.createQueryBuilder('urls', 'u')
         }
 
         const result = await repo
@@ -103,10 +103,10 @@ export class AppRepository {
     
         const result = await repo
             .insert()
-            .into('URLS')
+            .into('urls')
             .values(
                 {
-                url: dto.url,
+                originalUrl: dto.originalUrl,
                 newUrl: getNewUrl,
                 ip: ip,
                 },
@@ -124,10 +124,10 @@ export class AppRepository {
             repo = this.entityManager
         }
 
-        const url = dto.url
+        const url = dto.originalUrl
         const result = await repo
             .createQueryBuilder()
-            .update('URLS')
+            .update('urls')
             .set(
                 {
                 newUrl: getNewUrl,

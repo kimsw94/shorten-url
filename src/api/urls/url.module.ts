@@ -6,13 +6,18 @@ import { UrlGenerate } from 'src/common/utils/url-generate';
 import { UrlValidate } from 'src/common/utils/url-validate';
 import { IpCount } from 'src/common/utils/ip-count';
 import { IpClean } from 'src/common/utils/ip-clean';
-import { AppRepository } from 'src/repo/app.repository';
+import { UrlRepository } from 'src/repo/url.repository';
 
 @Module({
   imports: [UrlEntity],
   providers: [
-    UrlService, AppRepository, IpCount, IpClean, UrlValidate, UrlGenerate
+    UrlService,
+    UrlRepository,
+    IpCount,
+    IpClean,
+    UrlValidate,
+    UrlGenerate,
   ],
-  controllers: [UrlController]
+  controllers: [UrlController],
 })
-export class UrlModule { }
+export class UrlModule {}

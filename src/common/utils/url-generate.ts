@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IpCount } from './ip-count';
-import { UrlDTO } from '../../dtos/app.dto';
+import { UrlDTO } from '../../api/urls/dtos/url.dto';
 
 @Injectable()
 export class UrlGenerate {

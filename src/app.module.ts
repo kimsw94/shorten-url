@@ -3,10 +3,12 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UrlModule } from './url/url.module';
+import { UrlModule } from './api/urls/url.module';
 import { UrlEntity } from './entities/url.entity';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { UsersModule } from './api/users/users.module';
+import { UsersEntity } from './entities/user.entity';
 
 let envPath: string;
 switch (process.env.APP_ENV) {
@@ -34,10 +36,12 @@ dotenv.config({ path: path.resolve(envPath) });
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [UrlEntity],
+      entities: [UrlEntity, UsersEntity],
       synchronize: false,
     }),
+    UsersModule,
     UrlModule,
+    // OauthModule,
   ],
   controllers: [AppController],
   providers: [

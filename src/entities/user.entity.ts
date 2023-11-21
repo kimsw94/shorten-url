@@ -1,18 +1,24 @@
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity({
-  name: 'urls',
+  name: 'users',
 })
 
-export class UrlEntity {
+export class UsersEntity {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column({ type: 'varchar' })
-  originalUrl: string
+  username: string
 
   @Column({ type: 'varchar' })
-  newUrl: string
+  password: string
+
+  @Column({ type: 'varchar' })
+  address: string
+
+  @Column({ type: 'varchar' })
+  phone: string
 
   @Column({ type: 'varchar' })
   ip: string

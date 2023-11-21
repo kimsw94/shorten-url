@@ -19,7 +19,7 @@ class Application {
   
     if (this.DEV_MODE) {
       this.corsOriginList = [
-        'http://192.168.1.137:3000','http://localhost:3000'
+        'http://192.168.1.137:3000','http://localhost:3000', 'http://192.168.1.12:3000', 'http://192.168.1.12'
       ];
     } else {
       this.corsOriginList = [
