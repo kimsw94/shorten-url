@@ -92,7 +92,7 @@ export class UrlRepository {
         return result
     }
 
-    async saveInfo(dto: UrlDataType, ip: string, getNewUrl: string, manager?: EntityManager) {
+    async saveInfo(dto: UrlDataType, ip: string, getNewUrl: string, userId: number, manager?: EntityManager) {
         let repo = null;
         if(manager) {
             repo = manager.getRepository(UrlEntity)
@@ -110,7 +110,7 @@ export class UrlRepository {
                 originalUrl: dto.originalUrl,
                 newUrl: getNewUrl,
                 ip: ip,
-                user_id: dto.user_id,
+                user_id: userId,
                 },
             )
             .execute()

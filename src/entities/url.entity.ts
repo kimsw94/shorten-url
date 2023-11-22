@@ -17,13 +17,13 @@ export class UrlEntity {
   @Column({ type: 'varchar' })
   ip: string
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'integer' })
   user_id: number
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'integer' })
   product_id: number
 
-  @Column({ type: 'int' })
+  @Column({ type: 'integer' })
   redirect: number
 
   @CreateDateColumn()

@@ -6,11 +6,15 @@ import * as bcrypt from 'bcrypt';
 
 type UserDataType = {
   id?: number;
-  username?: string;
+  email?: string;
   password?: string;
+  nickname?: string;
   phone?: string;
-  address?: string;
 };
+
+type OptionType = {
+  with_deleted?: boolean;
+}
 
 @Injectable()
 export class UsersRepository {
@@ -31,9 +35,9 @@ export class UsersRepository {
       .insert()
       .into('users')
       .values({
-        username: dto.username,
+        email: dto.email,
         password: hashedPassword,
-        address: dto.address,
+        nickname: dto.nickname,
         phone: dto.phone,
         ip: clientIp,
       })
@@ -42,7 +46,7 @@ export class UsersRepository {
     return { result };
   }
 
-  async getHashedPassword(username: string, manager?: EntityManager) {
+  async getHashedPassword(email: string, manager?: EntityManager) {
     let repo = null;
     if (manager) {
       repo = manager.getRepository(UsersEntity);
@@ -51,17 +55,39 @@ export class UsersRepository {
       repo = this.entityManager;
       repo = repo.createQueryBuilder();
     }
-   
+
     const result = await repo
-      .select('users.password') 
-      .from('users') 
-      .where('users.username = :username', { username }) // 플레이스홀더 사용
+      .select('users.password')
+      .from('users')
+      .where('users.email = :email', { email })
       .getOne();
 
     return result.password;
   }
 
-  async getUserInfo(username: string, manager?: EntityManager) {
+  async getUserInfoById(userId: number, option: OptionType, manager?: EntityManager) {
+    let repo = null;
+    if (manager) {
+        repo = manager.getRepository(UsersEntity);
+        repo = repo.createQueryBuilder('u')
+    } else {
+        repo = this.entityManager;
+        repo = repo.createQueryBuilder('users', 'u')
+    }
+
+    let userRepo = repo
+    if (option?.with_deleted) {
+        userRepo = userRepo.withDeleted()
+      }
+    
+    const userInfo = await userRepo
+        .where('u.id = :userId', { userId })
+        .getOne();
+
+    return userInfo
+}
+
+  async getUserInfo(email: string, manager?: EntityManager) {
     let repo = null;
     if (manager) {
       repo = manager.getRepository(UsersEntity);
@@ -70,13 +96,115 @@ export class UsersRepository {
       repo = this.entityManager;
       repo = repo.createQueryBuilder();
     }
-   
+
     const result = await repo
-      .select() // 엔터티의 별칭과 함께 필드 선택
-      .from('users') // 엔터티 클래스와 엔터티의 별칭 설정
-      .where('users.username = :username', { username }) // 플레이스홀더 사용
+      .select()
+      .from('users')
+      .where('users.email = :email', { email }) // 플레이스홀더 사용
       .getOne();
-    console.log(result)
+
     return result;
+  }
+
+  async banUser(userId: number, manager?: EntityManager) {
+    let repo = null;
+    if (manager) {
+      repo = manager.getRepository(UsersEntity);
+    } else {
+      repo = this.entityManager;
+    }
+
+    const updateResult = await repo
+      .createQueryBuilder()
+      .softDelete()
+      .from('users')
+      .where('id = :userId', { userId })
+      .execute();
+    return updateResult;
+  }
+
+  async unbanUser(userId: number, manager?: EntityManager) {
+    let repo = null;
+    if (manager) {
+      repo = manager.getRepository(UsersEntity);
+    } else {
+      repo = this.entityManager;
+    }
+    const updateResult = await repo
+      .createQueryBuilder()
+      .update('users')
+      .set({
+        deleted_at: null,
+      })
+      .where('id = :userId', { userId })
+      .execute();
+    return updateResult;
+  }
+
+  async modifyUser(userId: number, dto: UserDataType, manager?: EntityManager) {
+    let repo = null;
+    if (manager) {
+      repo = manager.getRepository(UsersEntity);
+    } else {
+      repo = this.entityManager;
+    }
+    const updateResult = await repo
+      .createQueryBuilder()
+      .update('users')
+      .set({
+        nickname: dto.nickname,
+        email: dto.email,
+        phone: dto.phone,
+      })
+      .where('id = :userId', { userId })
+      .execute();
+    return updateResult;
+  }
+
+  async modifyUserWithPassword(
+    userId: number,
+    dto: UserDataType,
+    manager?: EntityManager,
+  ) {
+    let repo = null;
+    if (manager) {
+      repo = manager.getRepository(UsersEntity);
+    } else {
+      repo = this.entityManager;
+    }
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    const updateResult = await repo
+      .createQueryBuilder()
+      .update('users')
+      .set({
+        nickname: dto.nickname,
+        email: dto.email,
+        phone: dto.phone,
+        password: hashedPassword,
+      })
+      .where('id = :userId', { userId })
+      .execute();
+    return updateResult;
+  }
+
+  async resetUserPassword(userId: number, manager?: EntityManager) {
+    let repo = null;
+    if (manager) {
+      repo = manager.getRepository(UsersEntity);
+    } else {
+      repo = this.entityManager;
+    }
+    const password = '12345678';
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updateResult = await repo
+      .createQueryBuilder()
+      .update('users')
+      .set({
+        password: hashedPassword,
+      })
+      .where('id = :userId', { userId })
+      .execute();
+    return updateResult;
   }
 }

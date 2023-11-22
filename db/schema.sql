@@ -18,6 +18,7 @@
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(10000) NOT NULL,
+  `allowed` int NOT NULL,
   `description` varchar(1000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -39,27 +40,6 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `urls`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `urls` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `originalUrl` varchar(10000) NOT NULL,
-  `newUrl` varchar(1000) DEFAULT NULL,
-  `ip` varchar(1000) NOT NULL,
-  `user_id` int DEFAULT NULL,
-  `product_id` int DEFAULT NULL,
-  `redirect` int DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `users`
 --
 
@@ -67,16 +47,18 @@ CREATE TABLE `urls` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(10000) NOT NULL,
+  `email` varchar(1000) NOT NULL,
   `password` varchar(1000) NOT NULL,
-  `address` varchar(1000) DEFAULT NULL,
-  `product_id` int DEFAULT NULL,
+  `nickname` varchar(1000) NOT NULL,
+  `product_id` int DEFAULT '1',
   `phone` varchar(1000) DEFAULT NULL,
   `ip` varchar(1000) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -102,6 +84,5 @@ CREATE TABLE `users` (
 LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
   ('20231120040731'),
-  ('20231120040749'),
-  ('20231121022718');
+  ('20231120040749');
 UNLOCK TABLES;

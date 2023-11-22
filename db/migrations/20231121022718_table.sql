@@ -11,7 +11,9 @@ CREATE TABLE urls (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES users(product_id)
 );
 
 -- migrate:down

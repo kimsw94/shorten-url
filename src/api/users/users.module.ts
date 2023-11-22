@@ -16,6 +16,7 @@ import { UrlService } from '../urls/url.service';
 import { UrlRepository } from 'src/repo/url.repository';
 import { UrlGenerate } from 'src/common/utils/url-generate';
 import { IpCount } from 'src/common/utils/ip-count';
+import { EmailValidate } from 'src/common/utils/email-validate';
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ dotenv.config();
     
     // OauthModule,
   ],
-  providers: [UsersService, ConfigService, UsersRepository, IpClean, JwtStrategy, UrlValidate, UrlService, UrlRepository, UrlGenerate, IpClean, IpCount],
+  providers: [UsersService, ConfigService, UsersRepository, IpClean, JwtStrategy, UrlValidate, UrlService, EmailValidate, UrlRepository, UrlGenerate, IpClean, IpCount],
   controllers: [UsersController]
 })
 export class UsersModule {}

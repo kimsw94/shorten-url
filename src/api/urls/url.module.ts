@@ -9,11 +9,14 @@ import { IpClean } from 'src/common/utils/ip-clean';
 import { UrlRepository } from 'src/repo/url.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
+import { UsersEntity } from 'src/entities/product.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      UrlEntity
+      UrlEntity,
+      UsersEntity
     ]),
     PassportModule.register({
       defaultStrategy: 'jwt',
@@ -24,6 +27,7 @@ import { PassportModule } from '@nestjs/passport';
   providers: [
     UrlService,
     UrlRepository,
+    JwtService,
     IpCount,
     IpClean,
     UrlValidate,

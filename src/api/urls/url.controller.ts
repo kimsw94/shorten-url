@@ -16,12 +16,14 @@ import { UrlDTO } from 'src/api/urls/dtos/url.dto';
 import { IpClean } from 'src/common/utils/ip-clean';
 import { UrlValidate } from 'src/common/utils/url-validate';
 import { JwtAuthGuard } from 'src/jwt/jwt.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class UrlController {
   constructor(
     private readonly urlService: UrlService,
     private readonly urlValidate: UrlValidate,
+    private readonly jwtService: JwtService,
     private readonly ipClean: IpClean,
   ) {}
 
@@ -34,42 +36,38 @@ export class UrlController {
     return { url: redirectUrl };
   }
 
-  @Post('shorten')
-  async shortenUrl(@Body() dto: UrlDTO, @Req() req: Request) {
-    const clientIp = await this.ipClean.clientIpClean(req);
-    const serverIp = await this.ipClean.serverIpClean(req);
-    const serverPort = process.env.PORT;
-
-    const isUrl = await this.urlValidate.isUrl(dto);
-    if (!isUrl)
-      throw new InternalServerErrorException('유효한 형태의 URL이 아닙니다.');
-
-    const shortenUrl = await this.urlService.shortenUrl(dto, clientIp);
-    const getNewUrl = `http://${serverIp}:${serverPort}/${shortenUrl.getNewUrl}`;
-    shortenUrl.getNewUrl = getNewUrl;
-    return { originalUrl: getNewUrl };
-  }
-
-  @Get('url-list/:id')
+  @Get('shorten/list')
   @UseGuards(JwtAuthGuard)
-  async listUp(@Param() id: number, @Req() req: Request) {
+  async listUp(@Req() req: Request) {
+    const jwtCookie = req.cookies[process.env.JWT_KEY];
+    const id = this.jwtService.decode(jwtCookie)['id'];
+    if(!id) throw new InternalServerErrorException('로그인 후 이용해주세요')
+
     const list = await this.urlService.listUp(id);
-    if(!list) throw new UnauthorizedException('존재하지 않아요')
+    if (!list) throw new UnauthorizedException('생성된 단축 URL이 없습니다.');
     return { list: list };
   }
 
-  @Post('shorten/user')
+  @Post('shorten')
   @UseGuards(JwtAuthGuard)
   async shortenUserUrl(@Body() dto: UrlDTO, @Req() req: Request) {
-    const clientIp = await this.ipClean.clientIpClean(req);
-    const serverIp = await this.ipClean.serverIpClean(req);
-    const serverPort = process.env.PORT;
+    let productId;
+    let userId;
+    let clientIp = await this.ipClean.clientIpClean(req);
+    let serverIp = await this.ipClean.serverIpClean(req);
+    let serverPort = process.env.PORT;
 
     const isUrl = await this.urlValidate.isUrl(dto);
     if (!isUrl)
       throw new InternalServerErrorException('유효한 형태의 URL이 아닙니다.');
 
-    const shortenUrl = await this.urlService.shortenUrl(dto, clientIp);
+    const jwtCookie = req.cookies[process.env.JWT_KEY];
+    if (jwtCookie) {
+      userId = this.jwtService.decode(jwtCookie)['id'];
+      productId = this.jwtService.decode(jwtCookie)['product_id'];
+    }
+
+    const shortenUrl = await this.urlService.shortenUrl(dto, clientIp, userId, productId);
     const getNewUrl = `http://${serverIp}:${serverPort}/${shortenUrl.getNewUrl}`;
     shortenUrl.getNewUrl = getNewUrl;
     return { originalUrl: getNewUrl };

@@ -9,13 +9,13 @@ export class UsersEntity {
   id: number
 
   @Column({ type: 'varchar' })
-  username: string
+  email: string
 
   @Column({ type: 'varchar' })
   password: string
 
   @Column({ type: 'varchar' })
-  address: string
+  nickname: string
 
   @Column({ type: 'varchar' })
   phone: string

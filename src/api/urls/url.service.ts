@@ -6,6 +6,7 @@ import { UrlDTO } from 'src/api/urls/dtos/url.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlEntity } from 'src/entities/url.entity';
 import { Repository } from 'typeorm';
+import { UsersEntity } from 'src/entities/product.entity';
 
 @Injectable()
 export class UrlService {
@@ -13,6 +14,8 @@ export class UrlService {
     private readonly urlRepository: UrlRepository,
     @InjectRepository(UrlEntity)
     private readonly urlsRepository: Repository<UrlEntity>,
+    @InjectRepository(UsersEntity)
+    private readonly userRepository: Repository<UsersEntity>,
     private readonly urlGenerate: UrlGenerate,
     private readonly ipCount: IpCount,
   ) {}
@@ -22,14 +25,14 @@ export class UrlService {
     return getUrl;
   }
 
-  async shortenUrl(dto: UrlDTO, clientIp: string) {
+  async shortenUrl(dto: UrlDTO, clientIp: string, userId: number, productId: number) {
     let check;
     let getNewUrl;
 
     if (!dto.originalUrl)
       throw new InternalServerErrorException('단축할 URL을 입력해주세요.');
 
-    if(!dto.user_id) {
+    if(!userId) {
       const count = await this.ipCount.ipCount(dto, clientIp);
       if (count > 30)
         throw new InternalServerErrorException(
@@ -37,11 +40,19 @@ export class UrlService {
         );
     }
 
+    if (productId == 1) {
+      const count = await this.ipCount.ipCount(dto, clientIp);
+      if (count > 40)
+        throw new InternalServerErrorException(
+          '요청 횟수가 40회를 초과하였습니다.',
+        );
+    }
+
     do {
       getNewUrl = await this.urlGenerate.newUrlByRandom();
       check = await this.urlRepository.getNewUrlInfo(getNewUrl);
       if (!check) {
-        await this.urlRepository.saveInfo(dto, clientIp, getNewUrl);
+        await this.urlRepository.saveInfo(dto, clientIp, getNewUrl, userId);
         return { message: 'URL을 단축하였습니다.', getNewUrl };
       }
     } while (!check);

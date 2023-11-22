@@ -11,6 +11,9 @@ export class UsersEntity {
   @Column({ type: 'varchar' })
   name: string
 
+  @Column({ type: 'integer' })
+  product_id: number
+
   @Column({ type: 'varchar' })
   description: string
 
