@@ -36,7 +36,7 @@ export class UrlService {
       const count = await this.ipCount.ipCount(dto, clientIp);
       if (count > 10)
         throw new InternalServerErrorException(
-          '요청 횟수가 10회를녀애 ㅎ 초과하였습니다.',
+          '요청 횟수가 10회를 초과하였습니다.',
         );
     }
 
