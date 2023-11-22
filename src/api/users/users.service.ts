@@ -67,8 +67,7 @@ export class UsersService {
     });
 
     const jwt = await this.jwtService.signAsync({
-      id: user.id,
-      product_id: user.product_id,
+      id: user.id
     });
 
     return { user, jwt };

@@ -6,7 +6,7 @@ import { UrlDTO } from 'src/api/urls/dtos/url.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlEntity } from 'src/entities/url.entity';
 import { Repository } from 'typeorm';
-import { UsersEntity } from 'src/entities/product.entity';
+import { UsersEntity } from 'src/entities/user.entity';
 
 @Injectable()
 export class UrlService {
@@ -25,7 +25,7 @@ export class UrlService {
     return getUrl;
   }
 
-  async shortenUrl(dto: UrlDTO, clientIp: string, userId: number, productId: number) {
+  async shortenUrl(dto: UrlDTO, clientIp: string, userId: number) {
     let check;
     let getNewUrl;
 

@@ -21,9 +21,6 @@ export class UrlEntity {
   user_id: number
 
   @Column({ type: 'integer' })
-  product_id: number
-
-  @Column({ type: 'integer' })
   redirect: number
 
   @CreateDateColumn()
