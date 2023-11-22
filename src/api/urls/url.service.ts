@@ -34,17 +34,9 @@ export class UrlService {
 
     if(!userId) {
       const count = await this.ipCount.ipCount(dto, clientIp);
-      if (count > 30)
+      if (count > 10)
         throw new InternalServerErrorException(
-          '요청 횟수가 30회를 초과하였습니다.',
-        );
-    }
-
-    if (productId == 1) {
-      const count = await this.ipCount.ipCount(dto, clientIp);
-      if (count > 40)
-        throw new InternalServerErrorException(
-          '요청 횟수가 40회를 초과하였습니다.',
+          '요청 횟수가 10회를녀애 ㅎ 초과하였습니다.',
         );
     }
 
