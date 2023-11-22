@@ -23,9 +23,6 @@ export class UsersEntity {
   @Column({ type: 'varchar' })
   ip: string
 
-  @Column({ type: 'varchar' })
-  product_id: string
-
   @CreateDateColumn()
   created_at: Date;
 

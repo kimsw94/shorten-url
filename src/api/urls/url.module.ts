@@ -10,7 +10,7 @@ import { UrlRepository } from 'src/repo/url.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
-import { UsersEntity } from 'src/entities/product.entity';
+import { UsersEntity } from 'src/entities/user.entity';
 
 @Module({
   imports: [

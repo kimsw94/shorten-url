@@ -51,7 +51,6 @@ export class UrlController {
   @Post('shorten')
   @UseGuards(JwtAuthGuard)
   async shortenUserUrl(@Body() dto: UrlDTO, @Req() req: Request) {
-    let productId;
     let userId;
     let clientIp = await this.ipClean.clientIpClean(req);
     let serverIp = await this.ipClean.serverIpClean(req);
@@ -64,10 +63,9 @@ export class UrlController {
     const jwtCookie = req.cookies[process.env.JWT_KEY];
     if (jwtCookie) {
       userId = this.jwtService.decode(jwtCookie)['id'];
-      productId = this.jwtService.decode(jwtCookie)['product_id'];
     }
 
-    const shortenUrl = await this.urlService.shortenUrl(dto, clientIp, userId, productId);
+    const shortenUrl = await this.urlService.shortenUrl(dto, clientIp, userId);
     const getNewUrl = `http://${serverIp}:${serverPort}/${shortenUrl.getNewUrl}`;
     shortenUrl.getNewUrl = getNewUrl;
     return { originalUrl: getNewUrl };
